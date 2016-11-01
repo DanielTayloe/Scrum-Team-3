@@ -10,6 +10,7 @@ public class DistanceConverter {
             case METERS:
                 return amount;
             case YARDS:
+                return amount * 0.9144;
         }
         throw new IllegalArgumentException();
     }
@@ -23,6 +24,7 @@ public class DistanceConverter {
             case METERS:
                 return meters;
             case YARDS:
+                return meters / 0.9144;
         }        
         throw new IllegalArgumentException();
     }
