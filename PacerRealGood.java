@@ -173,14 +173,16 @@ class TabPanel extends JPanel{
 				double distance = Double.parseDouble(txtDistance.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
 				d = new DecimalFormat("#.##");
-				txtDistance.setText("" + d.format(PaceCalculations.Pace(time, distance, 1)));
+				double temp = PaceCalculations.Pace(time, distance, 1);
+				txtPaceMinutes.setText("" + d.format(temp));
+//				txtPaceSeconds.setText("" + d.format(PaceCalculations.Pace(time, distance, 1)));
 			}
 				break;
 			case TIME:{
 				double distance = Double.parseDouble(txtDistance.getText());
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
 				d = new DecimalFormat("#.##");
-				txtDistance.setText("" + d.format(PaceCalculations.Time(distance, pace, 1)));
+				txtTimeHours.setText("" + d.format(PaceCalculations.Time(distance, pace, 1)));
 			}
 				break;
 		}
