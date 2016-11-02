@@ -18,8 +18,8 @@ public class PacerRealGood {
 	private JFrame frame = null;
 	private JTabbedPane tabbedPane = null;
 	private TabPanel tabDistance;
-	private JPanel tabPace;
-	private JPanel tabTime;
+	private TabPanel tabPace;
+	private TabPanel tabTime;
 
 	/**
 	 * Launch the application.
@@ -62,12 +62,12 @@ public class PacerRealGood {
 		tabDistance = new TabPanel(TabPanel.TR, TabPanel.TL, TabPanel.BL, TabPanel.BR);
 		tabbedPane.addTab("Distance", tabDistance);
 		
-		tabPace = new JPanel();
-		tabPace.setLayout(new MigLayout("", "[]", "[]"));
+		tabPace = new TabPanel(TabPanel.TL, TabPanel.TR, TabPanel.BL, TabPanel.BR);
+//		tabPace.setLayout(new MigLayout("", "[]", "[]"));
 		tabbedPane.addTab("Pace", tabPace);
 
-		tabTime = new JPanel();
-		tabTime.setLayout(new MigLayout("", "[]", "[]"));
+		tabTime = new TabPanel(TabPanel.TL, TabPanel.BL, TabPanel.TR, TabPanel.BR);
+//		tabTime.setLayout(new MigLayout("", "[]", "[]"));
 		tabbedPane.addTab("Time", tabTime);
 	}
 }
@@ -98,6 +98,19 @@ class TabPanel extends JPanel{
 	
 	private JButton computeButton;
 	
+	/**
+	 * Uses the constants TabPanel.TL, etc to set which module will be placed where in this tab.
+	 * TabPanel.TL : Top left
+	 * TabPanel.TR : Top right
+	 * TabPanel.BL : Bottom left
+	 * TabPanel.BR : Bottom right
+	 * The modules are placed depending on the order of the constants. 
+	 * So if the first constant is TabPanel.TL, the distance module will be placed in the top left corner. 
+	 * @param positionDistance
+	 * @param positionPace
+	 * @param positionTime
+	 * @param positionCompute
+	 */
 	public TabPanel(String positionDistance, String positionPace, String positionTime, String positionCompute){
 		setLayout(new MigLayout("", "[grow][grow]", "[grow][grow]"));
 		
