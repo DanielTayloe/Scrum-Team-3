@@ -138,10 +138,16 @@ class TabPanel extends JPanel{
 		//assign mode so that top right panel is always answer box, this way we know how to compute answer
 		if(TabPanel.TR.equals(positionDistance)){
 			mode = DISTANCE;
+			txtDistance.setEnabled(false);
 		}else if(TabPanel.TR.equals(positionPace)){
 			mode = PACE;
+			txtPaceMinutes.setEnabled(false);
+			txtPaceSeconds.setEnabled(false);
 		}else if(TabPanel.TR.equals(positionTime)){
 			mode = TIME;
+			txtTimeHours.setEnabled(false);
+			txtTimeMinutes.setEnabled(false);
+			txtTimeSeconds.setEnabled(false);
 		}else{
 			mode = BAD;
 		}
@@ -153,19 +159,29 @@ class TabPanel extends JPanel{
 		}
 		
 		replaceEmptysWithZero();
+		DecimalFormat d;
 		
 		switch(mode){
-			case DISTANCE:
-				double pace = 1/(double)PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
+			case DISTANCE:{
+				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
-				DecimalFormat d = new DecimalFormat("#.##");
-				txtDistance.setText("" + d.format(pace * time));
+				d = new DecimalFormat("#.##");
+				txtDistance.setText("" + d.format(PaceCalculations.Distance(time, pace, 1)));
+			}
 				break;
-			case PACE:
-				
+			case PACE:{
+				double distance = Double.parseDouble(txtDistance.getText());
+				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
+				d = new DecimalFormat("#.##");
+				txtDistance.setText("" + d.format(PaceCalculations.Pace(time, distance, 1)));
+			}
 				break;
-			case TIME:
-				
+			case TIME:{
+				double distance = Double.parseDouble(txtDistance.getText());
+				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
+				d = new DecimalFormat("#.##");
+				txtDistance.setText("" + d.format(PaceCalculations.Time(distance, pace, 1)));
+			}
 				break;
 		}
 	}
@@ -253,7 +269,6 @@ class ComputeActionListener implements ActionListener{
 	
 	public ComputeActionListener(TabPanel currentPanel){
 		this.currentPanel = currentPanel;
-		System.out.println("created action listener");
 	}
 
 	@Override
