@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -142,9 +143,10 @@ class TabPanel extends JPanel{
 		
 		switch(mode){
 			case DISTANCE:
-				int pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
-				int time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
-				txtDistance.setText("" + (pace * time));
+				double pace = 1/(double)PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
+				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
+				DecimalFormat d = new DecimalFormat("#.##");
+				txtDistance.setText("" + d.format(pace * time));
 				break;
 			case PACE:
 				
