@@ -39,17 +39,95 @@ public class PaceCalculations {
 		
 	}
 	
-	public double Distance(double time, double pace, double factor){
+	/***
+	 * Calculate time, pace, and factor using strings
+	 * 
+	 * @param time
+	 * @param pace
+	 * @param factor
+	 * @return
+	 */
+	public static double Distance(String time, String pace, String factor){
+		try{
+			double temp = 0.0;
+			double dblTime = 0.0;
+			double dblPace = 0.0;
+			double dblFactor = 0.0;
+			
+			temp = Double.parseDouble(time);
+			dblTime = temp < 0.0 ? 0.0 : temp;
+			
+			temp = Double.parseDouble(pace);
+			dblPace = temp < 0.0 ? 0.0 : temp;
+			
+			temp = Double.parseDouble(factor);
+			dblFactor = temp < 0.0 ? 0.0 : temp;
+			
+			return Distance(dblTime, dblPace, dblFactor);
+		}catch(Exception e){
+			System.err.println("Distance() - Exception: " + e.getMessage());
+		}
+		return -1.0;
+	}
+	
+	
+	public static double Distance(double time, double pace, double factor){
 		//Dist = Time / (Pace / factor)
 		return time / (pace / factor);
 	}
 	
-	public double Pace(double time, double distance, double factor){
+	public static double Pace(String time, String distance, String factor){
+		try{
+			double temp = 0.0;
+			double dblTime = 0.0;
+			double dblPace = 0.0;
+			double dblFactor = 0.0;
+			
+			temp = Double.parseDouble(time);
+			dblTime = temp < 0.0 ? 0.0 : temp;
+			
+			temp = Double.parseDouble(pace);
+			dblPace = temp < 0.0 ? 0.0 : temp;
+			
+			temp = Double.parseDouble(factor);
+			dblFactor = temp < 0.0 ? 0.0 : temp;
+			
+			return Pace(dblTime, dblPace, dblFactor);
+		}catch(Exception e){
+			System.err.println("Pace() - Exception: " + e.getMessage());
+		}
+		return -1.0;
+	}
+	
+	public static double Pace(double time, double distance, double factor){
 		//Pace = (Time / distance) / factor
 		return (time / distance) / factor;
 	}
 	
-	public double Time(double distance, double pace, double factor){
+	public static double Time(String distance, String pace, String factor){
+		try{
+			double temp = 0.0;
+			double dblDistance = 0.0;
+			double dblPace = 0.0;
+			double dblFactor = 0.0;
+			
+			temp = Double.parseDouble(distance);
+			dblDistance = temp < 0.0 ? 0.0 : temp;
+			
+			temp = Double.parseDouble(pace);
+			dblPace = temp < 0.0 ? 0.0 : temp;
+			
+			temp = Double.parseDouble(factor);
+			dblFactor = temp < 0.0 ? 0.0 : temp;
+			
+			return Time(dblDistance, dblPace, dblFactor);
+		}catch(Exception e){
+			System.err.println("Time() - Exception: " + e.getMessage());
+		}
+		return -1.0;
+	}
+	
+	public static double Time(double distance, double pace, double factor){
 		//Time = Dist x Pace x factor
 		return distance * pace * factor;
 	}
@@ -69,7 +147,7 @@ public class PaceCalculations {
 	 * @param input hh:mm:ss string
 	 * @return total number of seconds as integer
 	 */
-	public double GetTotalSeconds(String input){
+	public static double GetTotalSeconds(String input){
 		
 		String[] elements = input.split(":");
 		if(elements.length != 3){
@@ -168,7 +246,7 @@ public class PaceCalculations {
 	 * @param totalSeconds number of seconds to retrieve hours from
 	 * @return hours as integer
 	 */
-	public double GetHoursFromSeconds(double totalSeconds){
+	public static double GetHoursFromSeconds(double totalSeconds){
 		if(totalSeconds <= 0) { return 0.0; }
 		
 		return totalSeconds / 3600.0;
@@ -181,7 +259,7 @@ public class PaceCalculations {
 	 * @param totalSeconds number of seconds to retrieve minutes from
 	 * @return minutes as integer
 	 */
-	public double GetMinutesFromSeconds(double totalSeconds){
+	public static double GetMinutesFromSeconds(double totalSeconds){
 		if(totalSeconds <= 0) { return 0.0; }
 		
 		return totalSeconds / 60.0;
