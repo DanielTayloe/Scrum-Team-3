@@ -41,17 +41,17 @@ public class PaceCalculations {
 	
 	public double Distance(double time, double pace, double factor){
 		//Dist = Time / (Pace / factor)
-		return 0.0;
+		return time / (pace / factor);
 	}
 	
 	public double Pace(double time, double distance, double factor){
 		//Pace = (Time / distance) / factor
-		return 0.0;
+		return (time / distance) / factor;
 	}
 	
 	public double Time(double distance, double pace, double factor){
 		//Time = Dist x Pace x factor
-		return 0.0;
+		return distance * pace * factor;
 	}
 	
 	
@@ -125,13 +125,40 @@ public class PaceCalculations {
 		return (hours * 3600) + (minutes * 60) + seconds;
 	}
 	
+	/***
+	 * Gets the total number of seconds from three separate strings representing hours, minutes, and seconds
+	 * If any of the strings represent negative numbers, they are truncated to zero.
+	 * 
+	 * Exceptions
+	 * If any of the strings are not able to be parsed to integers, the function returns -1
+	 * @param strHours
+	 * @param strMinutes
+	 * @param strSeconds
+	 * @return
+	 */
 	public static int GetTotalSeconds(String strHours, String strMinutes, String strSeconds){
-		
-		int hours = Integer.parseInt(strHours);
-		int minutes = Integer.parseInt(strMinutes);
-		int seconds = Integer.parseInt(strSeconds);
-		
-		return GetTotalSeconds(hours, minutes, seconds);
+		try{
+			
+			int temp = 0;
+			int hours = 0;
+			int minutes = 0;
+			int seconds = 0;
+			
+			temp = Integer.parseInt(strHours);
+			hours = temp < 0 ? 0 : temp;
+			
+			temp = Integer.parseInt(strMinutes);
+			minutes = temp < 0 ? 0 : temp;
+			
+			temp = Integer.parseInt(strSeconds);
+			seconds = temp < 0 ? 0 : temp;
+			
+			return GetTotalSeconds(hours, minutes, seconds);
+			
+		}catch(Exception e){
+			System.err.println("GetTotalSeconds() - Exception: " + e.getMessage());
+		}
+		return -1;
 	}
 	
 	/***
