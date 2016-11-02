@@ -80,19 +80,19 @@ public class PaceCalculations {
 		try{
 			double temp = 0.0;
 			double dblTime = 0.0;
-			double dblPace = 0.0;
+			double dblDistance = 0.0;
 			double dblFactor = 0.0;
 			
 			temp = Double.parseDouble(time);
 			dblTime = temp < 0.0 ? 0.0 : temp;
 			
-			temp = Double.parseDouble(pace);
-			dblPace = temp < 0.0 ? 0.0 : temp;
+			temp = Double.parseDouble(distance);
+			dblDistance = temp < 0.0 ? 0.0 : temp;
 			
 			temp = Double.parseDouble(factor);
 			dblFactor = temp < 0.0 ? 0.0 : temp;
 			
-			return Pace(dblTime, dblPace, dblFactor);
+			return Pace(dblTime, dblDistance, dblFactor);
 		}catch(Exception e){
 			System.err.println("Pace() - Exception: " + e.getMessage());
 		}
