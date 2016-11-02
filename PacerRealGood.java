@@ -102,19 +102,19 @@ class TabPanel extends JPanel{
 		
 		moduleDistance = new JPanel();
 		moduleDistance.setLayout(new MigLayout("", "[]", "[]"));
-		fillModuleDistance(moduleDistance, txtDistance);
+		fillModuleDistance();
 		add(moduleDistance, "cell "+ positionDistance +",grow");
 		
 		
 		modulePace = new JPanel();
 		modulePace.setLayout(new MigLayout("", "[][grow][grow]", "[][]"));
-		fillModulePace(modulePace, txtPaceMinutes, txtPaceSeconds);
+		fillModulePace();
 		add(modulePace, "cell "+ positionPace +",grow");
 		
 		
 		moduleTime = new JPanel();
 		moduleTime.setLayout(new MigLayout("", "[]", "[]"));
-		fillModuleTime(moduleTime, txtTimeHours, txtTimeMinutes, txtTimeSeconds);
+		fillModuleTime();
 		add(moduleTime, "cell "+ positionTime +",grow");
 
 		computeButton = new JButton("Compute");
@@ -138,10 +138,13 @@ class TabPanel extends JPanel{
 			return;
 		}
 		
+		replaceEmptysWithZero();
+		
 		switch(mode){
 			case DISTANCE:
-//				txtDistance.setText();
-				System.out.println("DISTANCE IS ANSWER");
+				int pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
+				int time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
+				txtDistance.setText("" + (pace * time));
 				break;
 			case PACE:
 				
@@ -152,72 +155,74 @@ class TabPanel extends JPanel{
 		}
 	}
 	
-//	private void assignValues(){
-//		if(mode == BAD){
-//			return;
-//		}
-//		
-//		switch(mode){
-//			case DISTANCE:
-//				break;
-//			case PACE:
-//				
-//				break;
-//			case TIME:
-//				
-//				break;
-//		}
-//	}
-	
-	private void fillModuleDistance(JPanel panel, JTextField distance){
-		JLabel lblMinutes = new JLabel("Miles");
-		panel.add(lblMinutes, "cell 1 0");
+	private void replaceEmptysWithZero(){
+		if(txtDistance.getText().trim().equals("")){
+			txtDistance.setText("0");
+		}
 
-		JLabel lblDistance = new JLabel("Distance");
-		panel.add(lblDistance, "cell 0 1,alignx trailing");
+		if(txtPaceMinutes.getText().trim().equals("")){
+			txtPaceMinutes.setText("0");
+		}
 
-		distance = new JTextField(10);
-		panel.add(distance, "cell 1 1,growx");
+		if(txtPaceSeconds.getText().trim().equals("")){
+			txtPaceSeconds.setText("0");
+		}
+
+		if(txtTimeHours.getText().trim().equals("")){
+			txtTimeHours.setText("0");
+		}
+
+		if(txtTimeMinutes.getText().trim().equals("")){
+			txtTimeMinutes.setText("0");
+		}
+
+		if(txtTimeSeconds.getText().trim().equals("")){
+			txtTimeSeconds.setText("0");
+		}
 	}
 	
-	private void fillModulePace(JPanel panel, JTextField minutes, JTextField seconds){
-		JLabel lblMinutes = new JLabel("Minutes");
-		panel.add(lblMinutes, "cell 1 0");
-		
-		JLabel lblSeconds = new JLabel("Seconds");
-		panel.add(lblSeconds, "cell 2 0");
+	private void fillModuleDistance(){
+		moduleDistance.add(new JLabel("Miles"), "cell 1 0");
 
-		JLabel lblPace = new JLabel("Pace");
-		panel.add(lblPace, "cell 0 1,alignx trailing");
+		moduleDistance.add(new JLabel("Distance"), "cell 0 1,alignx trailing");
 
-		minutes = new JTextField(5);
-		panel.add(minutes, "cell 1 1,growx");
-		
-		seconds = new JTextField(5);
-		panel.add(seconds, "cell 2 1,growx");
+		txtDistance = new JTextField(10);
+		moduleDistance.add(txtDistance, "cell 1 1,growx");
 	}
 	
-	private void fillModuleTime(JPanel panel, JTextField hours, JTextField minutes, JTextField seconds){
-		JLabel lblHours = new JLabel("Hours");
-		panel.add(lblHours, "cell 1 0");
+	private void fillModulePace(){
+		modulePace.add(new JLabel("Minutes"), "cell 1 0");
 		
-		JLabel lblMinutes = new JLabel("Minutes");
-		panel.add(lblMinutes, "cell 2 0");
-		
-		JLabel lblSeconds = new JLabel("Seconds");
-		panel.add(lblSeconds, "cell 3 0");
+		modulePace.add(new JLabel("Seconds"), "cell 2 0");
 
-		JLabel lblTime = new JLabel("Time");
-		panel.add(lblTime, "cell 0 1,alignx trailing");
+		modulePace.add(new JLabel("Pace"), "cell 0 1,alignx trailing");
 
-		hours = new JTextField(5);
-		panel.add(hours, "cell 1 1,growx");
+		txtPaceMinutes = new JTextField(5);
+		modulePace.add(txtPaceMinutes, "cell 1 1,growx");
 		
-		minutes = new JTextField(5);
-		panel.add(minutes, "cell 2 1,growx");
+		txtPaceSeconds = new JTextField(5);
+		modulePace.add(txtPaceSeconds, "cell 2 1,growx");
 		
-		seconds = new JTextField(5);
-		panel.add(seconds, "cell 3 1,growx");
+		modulePace.add(new JLabel("per Mile"), "cell 1 2,growx");
+	}
+	
+	private void fillModuleTime(){
+		moduleTime.add(new JLabel("Hours"), "cell 1 0");
+		
+		moduleTime.add(new JLabel("Minutes"), "cell 2 0");
+		
+		moduleTime.add(new JLabel("Seconds"), "cell 3 0");
+
+		moduleTime.add(new JLabel("Time"), "cell 0 1,alignx trailing");
+
+		txtTimeHours = new JTextField(5);
+		moduleTime.add(txtTimeHours, "cell 1 1,growx");
+		
+		txtTimeMinutes = new JTextField(5);
+		moduleTime.add(txtTimeMinutes, "cell 2 1,growx");
+		
+		txtTimeSeconds = new JTextField(5);
+		moduleTime.add(txtTimeSeconds, "cell 3 1,growx");
 	}
 	
 	public String toString(){
@@ -238,7 +243,9 @@ class ComputeActionListener implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(currentPanel.toString());
 		currentPanel.computeAnswer();
+		System.out.println(currentPanel.toString());
 	}
 }
+
+

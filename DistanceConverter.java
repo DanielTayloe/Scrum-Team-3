@@ -1,5 +1,3 @@
-package pacer;
-
 public class DistanceConverter {
     public double toMeters(DistanceUnit unit, double amount) {
         switch(unit) {

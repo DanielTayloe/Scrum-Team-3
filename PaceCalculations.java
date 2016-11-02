@@ -117,7 +117,7 @@ public class PaceCalculations {
 	 * @param seconds Number of seconds
 	 * @return seconds as integer
 	 */
-	public int GetTotalSeconds(int hours, int minutes, int seconds){
+	public static int GetTotalSeconds(int hours, int minutes, int seconds){
 		if(hours < 0) { hours = 0; }
 		if(minutes < 0) { minutes = 0; }
 		if(seconds < 0) { seconds = 0; }
@@ -125,7 +125,14 @@ public class PaceCalculations {
 		return (hours * 3600) + (minutes * 60) + seconds;
 	}
 	
-	
+	public static int GetTotalSeconds(String strHours, String strMinutes, String strSeconds){
+		
+		int hours = Integer.parseInt(strHours);
+		int minutes = Integer.parseInt(strMinutes);
+		int seconds = Integer.parseInt(strSeconds);
+		
+		return GetTotalSeconds(hours, minutes, seconds);
+	}
 	
 	/***
 	 * Returns the number of whole hours from a given number of total seconds
