@@ -69,7 +69,7 @@ public class PaceCalculations {
 	 * @param input hh:mm:ss string
 	 * @return total number of seconds as integer
 	 */
-	public int GetTotalSeconds(String input){
+	public double GetTotalSeconds(String input){
 		
 		String[] elements = input.split(":");
 		if(elements.length != 3){
@@ -81,18 +81,18 @@ public class PaceCalculations {
 		
 			try{
 				
-				int temp = 0;
-				int hours = 0;
-				int minutes = 0;
-				int seconds = 0;
+				double temp = 0;
+				double hours = 0;
+				double minutes = 0;
+				double seconds = 0;
 				
-				temp = Integer.parseInt(elements[0]);
+				temp = Double.parseDouble(elements[0]);
 				hours = temp < 0 ? 0 : temp;
 				
-				temp = Integer.parseInt(elements[1]);
+				temp = Double.parseDouble(elements[1]);
 				minutes = temp < 0 ? 0 : temp;
 				
-				temp = Integer.parseInt(elements[2]);
+				temp = Double.parseDouble(elements[2]);
 				seconds = temp < 0 ? 0 : temp;
 				
 				//total = (hours * 3600) + (minutes * 60) + seconds;
@@ -117,12 +117,12 @@ public class PaceCalculations {
 	 * @param seconds Number of seconds
 	 * @return seconds as integer
 	 */
-	public static int GetTotalSeconds(int hours, int minutes, int seconds){
+	public static double GetTotalSeconds(double hours, double minutes, double seconds){
 		if(hours < 0) { hours = 0; }
 		if(minutes < 0) { minutes = 0; }
 		if(seconds < 0) { seconds = 0; }
 		
-		return (hours * 3600) + (minutes * 60) + seconds;
+		return (hours * 3600.0) + (minutes * 60.0) + seconds;
 	}
 	
 	/***
@@ -136,21 +136,21 @@ public class PaceCalculations {
 	 * @param strSeconds
 	 * @return
 	 */
-	public static int GetTotalSeconds(String strHours, String strMinutes, String strSeconds){
+	public static double GetTotalSeconds(String strHours, String strMinutes, String strSeconds){
 		try{
 			
-			int temp = 0;
-			int hours = 0;
-			int minutes = 0;
-			int seconds = 0;
+			double temp = 0;
+			double hours = 0;
+			double minutes = 0;
+			double seconds = 0;
 			
-			temp = Integer.parseInt(strHours);
+			temp = Double.parseDouble(strHours);
 			hours = temp < 0 ? 0 : temp;
 			
-			temp = Integer.parseInt(strMinutes);
+			temp = Double.parseDouble(strMinutes);
 			minutes = temp < 0 ? 0 : temp;
 			
-			temp = Integer.parseInt(strSeconds);
+			temp = Double.parseDouble(strSeconds);
 			seconds = temp < 0 ? 0 : temp;
 			
 			return GetTotalSeconds(hours, minutes, seconds);
@@ -168,10 +168,10 @@ public class PaceCalculations {
 	 * @param totalSeconds number of seconds to retrieve hours from
 	 * @return hours as integer
 	 */
-	public int GetHoursFromSeconds(int totalSeconds){
-		if(totalSeconds <= 0) { return 0; }
+	public double GetHoursFromSeconds(double totalSeconds){
+		if(totalSeconds <= 0) { return 0.0; }
 		
-		return totalSeconds / 3600;
+		return totalSeconds / 3600.0;
 	}
 	
 	/***
@@ -181,10 +181,10 @@ public class PaceCalculations {
 	 * @param totalSeconds number of seconds to retrieve minutes from
 	 * @return minutes as integer
 	 */
-	public int GetMinutesFromSeconds(int totalSeconds){
-		if(totalSeconds <= 0) { return 0; }
+	public double GetMinutesFromSeconds(double totalSeconds){
+		if(totalSeconds <= 0) { return 0.0; }
 		
-		return totalSeconds / 60;
+		return totalSeconds / 60.0;
 	}
 	
 	/***
