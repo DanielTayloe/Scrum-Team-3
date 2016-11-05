@@ -4,12 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -20,7 +15,7 @@ public class PacerRealGood {
 	private TabPanel tabDistance;
 	private TabPanel tabPace;
 	private TabPanel tabTime;
-
+        
 	/**
 	 * Launch the application.
 	 */
@@ -95,7 +90,9 @@ class TabPanel extends JPanel{
 	private JTextField txtTimeMinutes;
 	private JTextField txtTimeSeconds;
 	private JTextField txtDistance;
-	
+	private JComboBox cmbDistanceUnits;
+	private JComboBox cmbPerDistanceUnits;
+                
 	private JButton computeButton;
 	
 	/**
@@ -157,7 +154,7 @@ class TabPanel extends JPanel{
 		if(mode == BAD){
 			return;
 		}
-		
+		                
 		replaceEmptysWithZero();
 		DecimalFormat d;
 		
@@ -215,8 +212,10 @@ class TabPanel extends JPanel{
 	}
 	
 	private void fillModuleDistance(){
-		moduleDistance.add(new JLabel("Miles"), "cell 1 0");
-
+                String[] unitStrings = { "Miles", "Kilometers", "Meters", "Yards" };
+                cmbDistanceUnits = new JComboBox(unitStrings);
+		moduleDistance.add(cmbDistanceUnits, "cell 1 0");
+                
 		moduleDistance.add(new JLabel("Distance"), "cell 0 1,alignx trailing");
 
 		txtDistance = new JTextField(10);
@@ -236,7 +235,9 @@ class TabPanel extends JPanel{
 		txtPaceSeconds = new JTextField(5);
 		modulePace.add(txtPaceSeconds, "cell 2 1,growx");
 		
-		modulePace.add(new JLabel("per Mile"), "cell 1 2,growx");
+                String[] unitStrings = { "per Mile", "per Kilometer", "per Meter", "per Yard" };
+                cmbPerDistanceUnits = new JComboBox(unitStrings);
+		modulePace.add(cmbPerDistanceUnits, "cell 1 2,growx");
 	}
 	
 	private void fillModuleTime(){
