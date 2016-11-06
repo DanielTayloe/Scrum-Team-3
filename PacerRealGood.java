@@ -149,7 +149,17 @@ class TabPanel extends JPanel{
 			mode = BAD;
 		}
 	}
-	
+
+        private double toMeters(JComboBox combo, double quantity) {
+            return quantity;
+//            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_MILES_TO_METERS+combo.getSelectedIndex()*4), quantity);
+        }
+        
+        private double fromMeters(JComboBox combo, double quantity) {
+            return quantity;
+//            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_METERS_TO_MILES+combo.getSelectedIndex()), quantity);            
+        }        
+        
 	public void computeAnswer(){
 		if(mode == BAD){
 			return;
@@ -163,14 +173,14 @@ class TabPanel extends JPanel{
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
 				d = new DecimalFormat("#.##");
-				txtDistance.setText("" + d.format(PaceCalculations.Distance(time, pace, 1)));
+				txtDistance.setText("" + d.format(fromMeters(cmbDistanceUnits, PaceCalculations.Distance(time, toMeters(cmbPerDistanceUnits, pace), 1))));
 			}
 				break;
 			case PACE:{
 				double distance = Double.parseDouble(txtDistance.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
 				d = new DecimalFormat("#.##");
-				double temp = PaceCalculations.Pace(time, distance, 1);
+				double temp = fromMeters(cmbPerDistanceUnits, PaceCalculations.Pace(time, toMeters(cmbDistanceUnits, distance), 1));
 				txtPaceMinutes.setText("" + d.format(temp));
 //				txtPaceSeconds.setText("" + d.format(PaceCalculations.Pace(time, distance, 1)));
 			}
@@ -179,7 +189,7 @@ class TabPanel extends JPanel{
 				double distance = Double.parseDouble(txtDistance.getText());
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
 				d = new DecimalFormat("#.##");
-				txtTimeHours.setText("" + d.format(PaceCalculations.Time(distance, pace, 1)));
+				txtTimeHours.setText("" + d.format(PaceCalculations.Time(toMeters(cmbDistanceUnits, distance), toMeters(cmbPerDistanceUnits, pace), 1)));
 			}
 				break;
 		}

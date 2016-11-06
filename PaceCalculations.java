@@ -123,7 +123,7 @@ public class PaceCalculations {
 			temp = Double.parseDouble(factor);
 			dblFactor = Math.max(0.0, temp);
 			
-			return Time(dblDistance, dblPace, dblFactor);
+//			return Time(dblDistance, dblPace, dblFactor);
 		}catch(Exception e){
 			System.err.println("Time() - Exception: " + e.getMessage());
 		}
