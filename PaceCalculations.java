@@ -54,14 +54,15 @@ public class PaceCalculations {
 			double dblPace = 0.0;
 			double dblFactor = 0.0;
 			
+                        // Parse the numbers and ensure they are above zero
 			temp = Double.parseDouble(time);
-			dblTime = temp < 0.0 ? 0.0 : temp;
+			dblTime = Math.max(0.0, temp);
 			
 			temp = Double.parseDouble(pace);
-			dblPace = temp < 0.0 ? 0.0 : temp;
+			dblPace = Math.max(0.0, temp);
 			
 			temp = Double.parseDouble(factor);
-			dblFactor = temp < 0.0 ? 0.0 : temp;
+			dblFactor = Math.max(0.0, temp);
 			
 			return Distance(dblTime, dblPace, dblFactor);
 		}catch(Exception e){
@@ -83,14 +84,15 @@ public class PaceCalculations {
 			double dblDistance = 0.0;
 			double dblFactor = 0.0;
 			
+                        // Parse the numbers and ensure they are above zero
 			temp = Double.parseDouble(time);
-			dblTime = temp < 0.0 ? 0.0 : temp;
+			dblTime = Math.max(0.0, temp);
 			
 			temp = Double.parseDouble(distance);
-			dblDistance = temp < 0.0 ? 0.0 : temp;
+			dblDistance = Math.max(0.0, temp);
 			
 			temp = Double.parseDouble(factor);
-			dblFactor = temp < 0.0 ? 0.0 : temp;
+			dblFactor = Math.max(0.0, temp);
 			
 			return Pace(dblTime, dblDistance, dblFactor);
 		}catch(Exception e){
@@ -111,14 +113,15 @@ public class PaceCalculations {
 			double dblPace = 0.0;
 			double dblFactor = 0.0;
 			
+                        // Parse the numbers and ensure they are above zero
 			temp = Double.parseDouble(distance);
-			dblDistance = temp < 0.0 ? 0.0 : temp;
-			
+			dblDistance = Math.max(0.0, temp);
+                        
 			temp = Double.parseDouble(pace);
-			dblPace = temp < 0.0 ? 0.0 : temp;
+			dblPace = Math.max(0.0, temp);
 			
 			temp = Double.parseDouble(factor);
-			dblFactor = temp < 0.0 ? 0.0 : temp;
+			dblFactor = Math.max(0.0, temp);
 			
 			return Time(dblDistance, dblPace, dblFactor);
 		}catch(Exception e){
@@ -164,14 +167,15 @@ public class PaceCalculations {
 				double minutes = 0;
 				double seconds = 0;
 				
+                                // Parse the numbers and ensure they are above zero
 				temp = Double.parseDouble(elements[0]);
-				hours = temp < 0 ? 0 : temp;
+				hours = Math.max(0.0, temp);
 				
 				temp = Double.parseDouble(elements[1]);
-				minutes = temp < 0 ? 0 : temp;
+				minutes = Math.max(0.0, temp);
 				
 				temp = Double.parseDouble(elements[2]);
-				seconds = temp < 0 ? 0 : temp;
+				seconds = Math.max(0.0, temp);
 				
 				//total = (hours * 3600) + (minutes * 60) + seconds;
 				
@@ -223,13 +227,13 @@ public class PaceCalculations {
 			double seconds = 0;
 			
 			temp = Double.parseDouble(strHours);
-			hours = temp < 0 ? 0 : temp;
+			hours = Math.max(0.0, temp);
 			
 			temp = Double.parseDouble(strMinutes);
-			minutes = temp < 0 ? 0 : temp;
+			minutes = Math.max(0.0, temp);
 			
 			temp = Double.parseDouble(strSeconds);
-			seconds = temp < 0 ? 0 : temp;
+			seconds = Math.max(0.0, temp);
 			
 			return GetTotalSeconds(hours, minutes, seconds);
 			
