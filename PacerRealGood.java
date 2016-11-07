@@ -188,16 +188,20 @@ class TabPanel extends JPanel{
 				double distance = Double.parseDouble(txtDistance.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
 				d = new DecimalFormat("#.##");
-				double temp = fromMeters(cmbPerDistanceUnits, PaceCalculations.Pace(time, toMeters(cmbDistanceUnits, distance), 1));
-				txtPaceMinutes.setText("" + d.format(temp));
-//				txtPaceSeconds.setText("" + d.format(PaceCalculations.Pace(time, distance, 1)));
+
+				String parts[] = PaceCalculations.secondsToParts(PaceCalculations.Pace(time, distance, 1));
+				txtPaceMinutes.setText(parts[1]);
+				txtPaceSeconds.setText(parts[2]);
 			}
 				break;
 			case TIME:{
 				double distance = Double.parseDouble(txtDistance.getText());
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
-				d = new DecimalFormat("#.##");
-				txtTimeHours.setText("" + d.format(PaceCalculations.Time(toMeters(cmbDistanceUnits, distance), toMeters(cmbPerDistanceUnits, pace), 1)));
+
+				String parts[] = PaceCalculations.secondsToParts(PaceCalculations.Time(distance, pace, 1));
+				txtTimeHours.setText(parts[0]);
+				txtTimeMinutes.setText(parts[1]);
+				txtTimeSeconds.setText(parts[2]);
 			}
 				break;
 		}

@@ -1,3 +1,6 @@
+
+import java.text.DecimalFormat;
+
 /***
  * Scrum Group 3
  * @author jacob psimos
@@ -254,6 +257,26 @@ public class PaceCalculations {
 		if(totalSeconds <= 0) { return 0.0; }
 		
 		return totalSeconds / 3600.0;
+	}
+	
+	/**
+	 * Splits a number of seconds into seconds, minutes and hours strings
+	 * 
+	 * @param seconds total number of seconds
+	 * @return string array, containing the hours, minutes and then seconds in order
+	 */
+	public static String[] secondsToParts(double seconds) {
+		int wholeSeconds = (int)Math.floor(seconds);
+		double fraction = seconds - (double)wholeSeconds;
+		
+		int secondsPart = wholeSeconds  % 60;
+		int minutesPart = (wholeSeconds / 60) % 60;
+		int hoursPart = wholeSeconds / 3600;
+		
+		DecimalFormat d = new DecimalFormat("#.#");
+
+		String out[] = new String[] {""+hoursPart, ""+minutesPart, d.format(secondsPart+fraction)};
+		return out;
 	}
 	
 	/***
