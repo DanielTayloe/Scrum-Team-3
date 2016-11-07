@@ -77,7 +77,11 @@ public class PaceCalculations {
 	
 	public static double Distance(double time, double pace, double factor){
 		//Dist = Time / (Pace / factor)
-		return time / (pace / factor);
+		if(pace != 0){
+			return time / (pace / factor);
+		}else{
+			return 0;
+		}
 	}
 	
 	public static double Pace(String time, String distance, String factor){

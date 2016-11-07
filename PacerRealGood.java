@@ -91,8 +91,8 @@ class TabPanel extends JPanel{
 	private JTextField txtTimeMinutes;
 	private JTextField txtTimeSeconds;
 	private JTextField txtDistance;
-	private JComboBox cmbDistanceUnits;
-	private JComboBox cmbPerDistanceUnits;
+//	private JComboBox cmbDistanceUnits;
+//	private JComboBox cmbPerDistanceUnits;
                 
 	private JButton computeButton;
 	
@@ -158,15 +158,15 @@ class TabPanel extends JPanel{
 		}
 	}
 
-        private double toMeters(JComboBox combo, double quantity) {
-            return quantity;
-//            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_MILES_TO_METERS+combo.getSelectedIndex()*4), quantity);
-        }
-        
-        private double fromMeters(JComboBox combo, double quantity) {
-            return quantity;
-//            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_METERS_TO_MILES+combo.getSelectedIndex()), quantity);            
-        }        
+//        private double toMeters(JComboBox combo, double quantity) {
+//            return quantity;
+////            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_MILES_TO_METERS+combo.getSelectedIndex()*4), quantity);
+//        }
+//        
+//        private double fromMeters(JComboBox combo, double quantity) {
+//            return quantity;
+////            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_METERS_TO_MILES+combo.getSelectedIndex()), quantity);            
+//        }  
         
 	public void computeAnswer(){
 		if(mode == BAD){
@@ -181,7 +181,7 @@ class TabPanel extends JPanel{
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
 				d = new DecimalFormat("#.##");
-				txtDistance.setText("" + d.format(fromMeters(cmbDistanceUnits, PaceCalculations.Distance(time, toMeters(cmbPerDistanceUnits, pace), 1))));
+				txtDistance.setText("" + d.format(PaceCalculations.Distance(time, pace, 1)));
 			}
 				break;
 			case PACE:{
@@ -234,9 +234,11 @@ class TabPanel extends JPanel{
 	}
 	
 	private void fillModuleDistance(boolean eventSelector){
-                String[] unitStrings = { "Miles", "Kilometers", "Meters", "Yards" };
-                cmbDistanceUnits = new JComboBox(unitStrings);
-		moduleDistance.add(cmbDistanceUnits, "cell 1 0");
+//                String[] unitStrings = { "Miles", "Kilometers", "Meters", "Yards" };
+//                cmbDistanceUnits = new JComboBox(unitStrings);
+//		moduleDistance.add(cmbDistanceUnits, "cell 1 0");
+		
+		moduleDistance.add(new JLabel("Miles"), "cell 1 0");
                 
 		moduleDistance.add(new JLabel("Distance"), "cell 0 1,alignx trailing");
 
@@ -254,10 +256,13 @@ class TabPanel extends JPanel{
 					int eventSelected = cmbEvents.getSelectedIndex();
 
 					double eventQuantities[] = {26.21875, 13.109375, 5, 5, 8, 10, 15, 10, 20, 15, 25, 30, 20};
-					int eventUnits[] = {0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0};
-
-					txtDistance.setText(eventQuantities[eventSelected]+"");
-					cmbDistanceUnits.setSelectedIndex(eventUnits[eventSelected]);
+					double distance = eventQuantities[eventSelected];
+					int needsConverting[] = {0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0};
+					if(needsConverting[eventSelected] == 1){//event needs converting to miles
+						distance = PaceCalculations.ConvertUnit(PaceCalculations.CONV_KILOMETERS_TO_MILES, distance);
+					}
+					txtDistance.setText(distance+"");
+//					cmbDistanceUnits.setSelectedIndex(eventUnits[eventSelected]);
 				}
 			});
 		}
@@ -277,9 +282,11 @@ class TabPanel extends JPanel{
 		txtPaceSeconds = new JTextField(5);
 		modulePace.add(txtPaceSeconds, "cell 2 1,growx");
 		
-                String[] unitStrings = { "per Mile", "per Kilometer", "per Meter", "per Yard" };
-                cmbPerDistanceUnits = new JComboBox(unitStrings);
-		modulePace.add(cmbPerDistanceUnits, "cell 1 2,growx");
+//                String[] unitStrings = { "per Mile", "per Kilometer", "per Meter", "per Yard" };
+//                cmbPerDistanceUnits = new JComboBox(unitStrings);
+//		modulePace.add(cmbPerDistanceUnits, "cell 1 2,growx");
+		
+		modulePace.add(new JLabel("Per Mile"), "cell 1 2");
 	}
 	
 	private void fillModuleTime(){
