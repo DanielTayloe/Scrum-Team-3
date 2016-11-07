@@ -110,7 +110,11 @@ public class PaceCalculations {
 	
 	public static double Pace(double time, double distance, double factor){
 		//Pace = (Time / distance) / factor
-		return (time / distance) / factor;
+		if(distance != 0){
+			return (time / distance) / factor;
+		}else{
+			return 0;
+		}
 	}
 	
 	public static double Time(String distance, String pace, String factor){
@@ -270,8 +274,12 @@ public class PaceCalculations {
 	 * @return string array, containing the hours, minutes and then seconds in order
 	 */
 	public static String[] secondsToParts(double seconds) {
-		int wholeSeconds = (int)Math.floor(seconds);
-		double fraction = seconds - (double)wholeSeconds;
+		int wholeSeconds = 0;
+		double fraction = 0;
+		if(seconds != Double.NaN){
+			wholeSeconds = (int)Math.floor(seconds);
+			fraction = seconds - (double)wholeSeconds;
+		}
 		
 		int secondsPart = wholeSeconds  % 60;
 		int minutesPart = (wholeSeconds / 60) % 60;
