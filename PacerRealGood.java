@@ -93,8 +93,9 @@ class TabPanel extends JPanel{
 	private JTextField txtDistance;
 //	private JComboBox cmbDistanceUnits;
 //	private JComboBox cmbPerDistanceUnits;
-                
+
 	private JButton computeButton;
+	private JButton resetButton;
 	
 	/**
 	 * Uses the constants TabPanel.TL, etc to set which module will be placed where in this tab.
@@ -134,9 +135,12 @@ class TabPanel extends JPanel{
 		computeButton = new JButton("Compute");
 		computeButton.setPreferredSize(compDim);
 		computeButton.addActionListener(new ComputeActionListener(this));
+		resetButton = new JButton("Reset");
+		resetButton.setPreferredSize(compDim);
 		JPanel tempPanel = new JPanel();
 		tempPanel.setLayout(new BorderLayout());
 		tempPanel.add(computeButton, BorderLayout.SOUTH);
+		tempPanel.add(resetButton, BorderLayout.CENTER);
 		moduleCompute.add(tempPanel, BorderLayout.EAST);
 		add(moduleCompute, "cell "+ positionCompute +",grow");
 		
