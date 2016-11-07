@@ -56,15 +56,13 @@ public class PacerRealGood {
 	}
 	
 	private void addTabs(){
-		tabDistance = new TabPanel(TabPanel.TR, TabPanel.TL, TabPanel.BL, TabPanel.BR);
+		tabDistance = new TabPanel(TabPanel.BL, TabPanel.TL, TabPanel.TR, TabPanel.BR);
 		tabbedPane.addTab("Distance", tabDistance);
 		
-		tabPace = new TabPanel(TabPanel.TL, TabPanel.TR, TabPanel.BL, TabPanel.BR);
-//		tabPace.setLayout(new MigLayout("", "[]", "[]"));
+		tabPace = new TabPanel(TabPanel.TL, TabPanel.BL, TabPanel.TR, TabPanel.BR);
 		tabbedPane.addTab("Pace", tabPace);
 
-		tabTime = new TabPanel(TabPanel.TL, TabPanel.BL, TabPanel.TR, TabPanel.BR);
-//		tabTime.setLayout(new MigLayout("", "[]", "[]"));
+		tabTime = new TabPanel(TabPanel.TL, TabPanel.TR, TabPanel.BL, TabPanel.BR);
 		tabbedPane.addTab("Time", tabTime);
 	}
 }
@@ -143,14 +141,14 @@ class TabPanel extends JPanel{
 		add(moduleCompute, "cell "+ positionCompute +",grow");
 		
 		//assign mode so that top right panel is always answer box, this way we know how to compute answer
-		if(TabPanel.TR.equals(positionDistance)){
+		if(TabPanel.BL.equals(positionDistance)){
 			mode = DISTANCE;
 			txtDistance.setEnabled(false);
-		}else if(TabPanel.TR.equals(positionPace)){
+		}else if(TabPanel.BL.equals(positionPace)){
 			mode = PACE;
 			txtPaceMinutes.setEnabled(false);
 			txtPaceSeconds.setEnabled(false);
-		}else if(TabPanel.TR.equals(positionTime)){
+		}else if(TabPanel.BL.equals(positionTime)){
 			mode = TIME;
 			txtTimeHours.setEnabled(false);
 			txtTimeMinutes.setEnabled(false);
@@ -237,31 +235,31 @@ class TabPanel extends JPanel{
 		moduleDistance.add(cmbDistanceUnits, "cell 1 0");
                 
 		moduleDistance.add(new JLabel("Distance"), "cell 0 1,alignx trailing");
-                                        
+
 		txtDistance = new JTextField(10);
 		moduleDistance.add(txtDistance, "cell 1 1,growx");
 
-                if(eventSelector) {
-                    String[] eventNames = {"Marathon", "Half-Marathon", "5K", "5M", "8K", "10K", "15K", "10M", "20K", "15M", "25K", "30K", "20M"};
-                    final JComboBox cmbEvents = new JComboBox(eventNames);
-                    moduleDistance.add(new JLabel("Or select an event"), "cell 0 2,alignx trailing");
-                    moduleDistance.add(cmbEvents, "cell 1 2,alignx trailing");
-                    cmbEvents.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            int eventSelected = cmbEvents.getSelectedIndex();
-                        
-                            double eventQuantities[] = {26.21875, 13.109375, 5, 5, 8, 10, 15, 10, 20, 15, 25, 30, 20};
-                            int eventUnits[] = {0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0};
-                        
-                            txtDistance.setText(eventQuantities[eventSelected]+"");
-                            cmbDistanceUnits.setSelectedIndex(eventUnits[eventSelected]);
-                        }
-                    });
-                }
+		if(eventSelector) {
+			String[] eventNames = {"Marathon", "Half-Marathon", "5K", "5M", "8K", "10K", "15K", "10M", "20K", "15M", "25K", "30K", "20M"};
+			final JComboBox cmbEvents = new JComboBox(eventNames);
+			moduleDistance.add(new JLabel("Or select an event"), "cell 0 2,alignx trailing");
+			moduleDistance.add(cmbEvents, "cell 1 2,alignx trailing");
+			cmbEvents.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int eventSelected = cmbEvents.getSelectedIndex();
 
-        }
-	
+					double eventQuantities[] = {26.21875, 13.109375, 5, 5, 8, 10, 15, 10, 20, 15, 25, 30, 20};
+					int eventUnits[] = {0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0};
+
+					txtDistance.setText(eventQuantities[eventSelected]+"");
+					cmbDistanceUnits.setSelectedIndex(eventUnits[eventSelected]);
+				}
+			});
+		}
+
+	}
+
 	private void fillModulePace(){
 		modulePace.add(new JLabel("Minutes"), "cell 1 0");
 		
