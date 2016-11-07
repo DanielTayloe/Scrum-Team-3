@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -44,8 +45,9 @@ public class PacerRealGood {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 650, 350);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -83,6 +85,7 @@ class TabPanel extends JPanel{
 	private JPanel modulePace;
 	private JPanel moduleTime;
 	private JPanel moduleDistance;
+	private JPanel moduleCompute;
 
 	private JTextField txtPaceMinutes;
 	private JTextField txtPaceSeconds;
@@ -127,9 +130,17 @@ class TabPanel extends JPanel{
 		fillModuleTime();
 		add(moduleTime, "cell "+ positionTime +",grow");
 
+		moduleCompute = new JPanel();
+		moduleCompute.setLayout(new BorderLayout());
+		Dimension compDim = new Dimension(100, 65);
 		computeButton = new JButton("Compute");
+		computeButton.setPreferredSize(compDim);
 		computeButton.addActionListener(new ComputeActionListener(this));
-		add(computeButton, "cell "+ positionCompute +",grow");
+		JPanel tempPanel = new JPanel();
+		tempPanel.setLayout(new BorderLayout());
+		tempPanel.add(computeButton, BorderLayout.SOUTH);
+		moduleCompute.add(tempPanel, BorderLayout.EAST);
+		add(moduleCompute, "cell "+ positionCompute +",grow");
 		
 		//assign mode so that top right panel is always answer box, this way we know how to compute answer
 		if(TabPanel.TR.equals(positionDistance)){
@@ -232,7 +243,7 @@ class TabPanel extends JPanel{
 
                 if(eventSelector) {
                     String[] eventNames = {"Marathon", "Half-Marathon", "5K", "5M", "8K", "10K", "15K", "10M", "20K", "15M", "25K", "30K", "20M"};
-                    JComboBox cmbEvents = new JComboBox(eventNames);
+                    final JComboBox cmbEvents = new JComboBox(eventNames);
                     moduleDistance.add(new JLabel("Or select an event"), "cell 0 2,alignx trailing");
                     moduleDistance.add(cmbEvents, "cell 1 2,alignx trailing");
                     cmbEvents.addActionListener(new ActionListener() {
