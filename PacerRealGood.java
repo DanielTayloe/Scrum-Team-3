@@ -9,10 +9,14 @@ import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
 
-
+/**
+ * Driver for the pace calculator application.
+ * @author Daniel
+ *
+ */
 public class PacerRealGood {
-	private JFrame frame = null;
-	private JTabbedPane tabbedPane = null;
+	private JFrame frame;
+	private JTabbedPane tabbedPane;
 	private TabPanel tabDistance;
 	private TabPanel tabPace;
 	private TabPanel tabTime;
@@ -55,6 +59,9 @@ public class PacerRealGood {
 		addTabs();
 	}
 	
+	/**
+	 * Add tabs to JTabbedPane
+	 */
 	private void addTabs(){
 		tabDistance = new TabPanel(TabPanel.BL, TabPanel.TL, TabPanel.TR, TabPanel.BR);
 		tabbedPane.addTab("Distance", tabDistance);
@@ -67,6 +74,11 @@ public class PacerRealGood {
 	}
 }
 
+/**
+ * Serves as an individual panel for a tab, using Java's JTabbedPane class. 
+ * @author Daniel
+ *
+ */
 class TabPanel extends JPanel{
 	public static final String TL = "0 0";
 	public static final String TR = "1 0";
@@ -91,8 +103,6 @@ class TabPanel extends JPanel{
 	private JTextField txtTimeMinutes;
 	private JTextField txtTimeSeconds;
 	private JTextField txtDistance;
-//	private JComboBox cmbDistanceUnits;
-//	private JComboBox cmbPerDistanceUnits;
 
 	private JButton computeButton;
 	private JButton resetButton;
@@ -115,7 +125,7 @@ class TabPanel extends JPanel{
 		
 		moduleDistance = new JPanel();
 		moduleDistance.setLayout(new MigLayout("", "[]", "[]"));
-		fillModuleDistance(!TabPanel.TR.equals(positionDistance));
+		fillModuleDistance(!TabPanel.BL.equals(positionDistance));
 		add(moduleDistance, "cell "+ positionDistance +",grow");
 		
 		
@@ -137,6 +147,7 @@ class TabPanel extends JPanel{
 		computeButton.addActionListener(new ComputeActionListener(this));
 		resetButton = new JButton("Reset");
 		resetButton.setPreferredSize(compDim);
+		resetButton.addActionListener(new ResetActionListener(this));
 		JPanel tempPanel = new JPanel();
 		tempPanel.setLayout(new BorderLayout());
 		tempPanel.add(computeButton, BorderLayout.SOUTH);
@@ -162,16 +173,11 @@ class TabPanel extends JPanel{
 		}
 	}
 
-//        private double toMeters(JComboBox combo, double quantity) {
-//            return quantity;
-////            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_MILES_TO_METERS+combo.getSelectedIndex()*4), quantity);
-//        }
-//        
-//        private double fromMeters(JComboBox combo, double quantity) {
-//            return quantity;
-////            return PaceCalculations.ConvertUnit((byte)(PaceCalculations.CONV_METERS_TO_MILES+combo.getSelectedIndex()), quantity);            
-//        }  
-        
+	/**
+	 * Computes answer as long as there are no error conditions, 
+	 * and places the answer into the appropriate box. 
+	 * If there are blank boxes they will be cleared to zero.
+	 */
 	public void computeAnswer(){
 		if(mode == BAD){
 			return;
@@ -211,6 +217,9 @@ class TabPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * Clears any boxes that are empty, setting them to zero.
+	 */
 	private void replaceEmptysWithZero(){
 		if(txtDistance.getText().trim().equals("")){
 			txtDistance.setText("0");
@@ -237,11 +246,23 @@ class TabPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * Clears all boxes to zero, regardless of existing content.
+	 */
+	public void reset(){
+		txtDistance.setText("0");
+		txtPaceMinutes.setText("0");
+		txtPaceSeconds.setText("0");
+		txtTimeHours.setText("0");
+		txtTimeMinutes.setText("0");
+		txtTimeSeconds.setText("0");
+	}
+	
+	/**
+	 * Fills the distance module with user interface components needed for input.
+	 * @param eventSelector toggles display of the event combobox, true enables display.
+	 */
 	private void fillModuleDistance(boolean eventSelector){
-//                String[] unitStrings = { "Miles", "Kilometers", "Meters", "Yards" };
-//                cmbDistanceUnits = new JComboBox(unitStrings);
-//		moduleDistance.add(cmbDistanceUnits, "cell 1 0");
-		
 		moduleDistance.add(new JLabel("Miles"), "cell 1 0");
                 
 		moduleDistance.add(new JLabel("Distance"), "cell 0 1,alignx trailing");
@@ -266,13 +287,14 @@ class TabPanel extends JPanel{
 						distance = PaceCalculations.ConvertUnit(PaceCalculations.CONV_KILOMETERS_TO_MILES, distance);
 					}
 					txtDistance.setText(distance+"");
-//					cmbDistanceUnits.setSelectedIndex(eventUnits[eventSelected]);
 				}
 			});
 		}
 
 	}
-
+	/**
+	 * Fills the pace module with user interface components needed for input.
+	 */
 	private void fillModulePace(){
 		modulePace.add(new JLabel("Minutes"), "cell 1 0");
 		
@@ -286,13 +308,12 @@ class TabPanel extends JPanel{
 		txtPaceSeconds = new JTextField(5);
 		modulePace.add(txtPaceSeconds, "cell 2 1,growx");
 		
-//                String[] unitStrings = { "per Mile", "per Kilometer", "per Meter", "per Yard" };
-//                cmbPerDistanceUnits = new JComboBox(unitStrings);
-//		modulePace.add(cmbPerDistanceUnits, "cell 1 2,growx");
-		
 		modulePace.add(new JLabel("Per Mile"), "cell 1 2");
 	}
 	
+	/**
+	 * Fills the time module with user interface components needed for input.
+	 */
 	private void fillModuleTime(){
 		moduleTime.add(new JLabel("Hours"), "cell 1 0");
 		
@@ -320,6 +341,11 @@ class TabPanel extends JPanel{
 	}
 }
 
+/**
+ * Provides an action listener interface for computing the answer on a tab.
+ * @author Daniel
+ *
+ */
 class ComputeActionListener implements ActionListener{
 	private TabPanel currentPanel;
 	
@@ -331,6 +357,24 @@ class ComputeActionListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		currentPanel.computeAnswer();
 		System.out.println(currentPanel.toString());
+	}
+}
+
+/**
+ * Provides an action listener interface for resetting all input boxes to zero on a tab.
+ * @author Daniel
+ *
+ */
+class ResetActionListener implements ActionListener{
+	private TabPanel currentPanel;
+	
+	public ResetActionListener(TabPanel currentPanel){
+		this.currentPanel = currentPanel;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		currentPanel.reset();
 	}
 }
 
