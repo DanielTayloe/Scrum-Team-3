@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -184,34 +185,82 @@ class TabPanel extends JPanel{
 		}
 		                
 		replaceEmptysWithZero();
-		DecimalFormat d;
+		DecimalFormat d = new DecimalFormat("#.##");
 		
 		switch(mode){
 			case DISTANCE:{
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
-				d = new DecimalFormat("#.##");
-				txtDistance.setText("" + d.format(PaceCalculations.Distance(time, pace, 1)));
+				
+				//Color highlighting for incorrect values
+				if(pace < 0.0 || time < 0.0){
+					txtPaceMinutes.setBackground(Color.PINK);
+					txtPaceSeconds.setBackground(Color.PINK);
+					txtTimeMinutes.setBackground(Color.PINK);
+					txtTimeSeconds.setBackground(Color.PINK);
+					txtTimeHours.setBackground(Color.PINK);
+					
+					txtDistance.setText("");
+				}else{
+					txtPaceMinutes.setBackground(Color.WHITE);
+					txtPaceSeconds.setBackground(Color.WHITE);
+					txtTimeMinutes.setBackground(Color.WHITE);
+					txtTimeSeconds.setBackground(Color.WHITE);
+					txtTimeHours.setBackground(Color.WHITE);
+					
+					txtDistance.setText("" + d.format(PaceCalculations.Distance(time, pace, 1)));
+				}
 			}
 				break;
 			case PACE:{
-				double distance = Double.parseDouble(txtDistance.getText());
+				double distance = PaceCalculations.SafeParseDouble(txtDistance.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
-				d = new DecimalFormat("#.##");
-
-				String parts[] = PaceCalculations.secondsToParts(PaceCalculations.Pace(time, distance, 1));
-				txtPaceMinutes.setText(parts[1]);
-				txtPaceSeconds.setText(parts[2]);
+				
+				//Color highlighting for incorrect values
+				if(distance < 0.0 || time < 0.0){
+					txtTimeHours.setBackground(Color.PINK);
+					txtTimeMinutes.setBackground(Color.PINK);
+					txtTimeSeconds.setBackground(Color.PINK);
+					
+					txtPaceMinutes.setText("");
+					txtPaceSeconds.setText("");
+					
+				}else{
+					txtTimeHours.setBackground(Color.WHITE);
+					txtTimeMinutes.setBackground(Color.WHITE);
+					txtTimeSeconds.setBackground(Color.WHITE);
+					
+					String parts[] = PaceCalculations.secondsToParts(PaceCalculations.Pace(time, distance, 1));
+					txtPaceMinutes.setText(parts[1]);
+					txtPaceSeconds.setText(parts[2]);
+				}
 			}
 				break;
 			case TIME:{
-				double distance = Double.parseDouble(txtDistance.getText());
+	
+				//double distance = Double.parseDouble(txtDistance.getText());
+				double distance = PaceCalculations.SafeParseDouble(txtDistance.getText());		//created SafeParseDouble
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
-
-				String parts[] = PaceCalculations.secondsToParts(PaceCalculations.Time(distance, pace, 1));
-				txtTimeHours.setText(parts[0]);
-				txtTimeMinutes.setText(parts[1]);
-				txtTimeSeconds.setText(parts[2]);
+				
+				
+				//Color highlighting for incorrect values
+				if(distance < 0.0 || pace < 0.0){
+					txtPaceMinutes.setBackground(Color.PINK);
+					txtPaceSeconds.setBackground(Color.PINK);
+					
+					txtTimeHours.setText("");
+					txtTimeMinutes.setText("");
+					txtTimeSeconds.setText("");
+					
+				}else{
+					txtPaceMinutes.setBackground(Color.WHITE);
+					txtPaceSeconds.setBackground(Color.WHITE);
+							
+					String parts[] = PaceCalculations.secondsToParts(PaceCalculations.Time(distance, pace, 1));
+					txtTimeHours.setText(parts[0]);
+					txtTimeMinutes.setText(parts[1]);
+					txtTimeSeconds.setText(parts[2]);
+				}
 			}
 				break;
 		}
@@ -271,7 +320,7 @@ class TabPanel extends JPanel{
 		moduleDistance.add(txtDistance, "cell 1 1,growx");
 
 		if(eventSelector) {
-			String[] eventNames = {"Marathon", "Half-Marathon", "5K", "5M", "8K", "10K", "15K", "10M", "20K", "15M", "25K", "30K", "20M"};
+			String[] eventNames = {"", "Marathon", "Half-Marathon", "5K", "5M", "8K", "10K", "15K", "10M", "20K", "15M", "25K", "30K", "20M"};
 			final JComboBox cmbEvents = new JComboBox(eventNames);
 			moduleDistance.add(new JLabel("Or select an event"), "cell 0 2,alignx trailing");
 			moduleDistance.add(cmbEvents, "cell 1 2,alignx trailing");
@@ -280,9 +329,9 @@ class TabPanel extends JPanel{
 				public void actionPerformed(ActionEvent e) {
 					int eventSelected = cmbEvents.getSelectedIndex();
 
-					double eventQuantities[] = {26.21875, 13.109375, 5, 5, 8, 10, 15, 10, 20, 15, 25, 30, 20};
+					double eventQuantities[] = {0.0, 26.21875, 13.109375, 5, 5, 8, 10, 15, 10, 20, 15, 25, 30, 20};
 					double distance = eventQuantities[eventSelected];
-					int needsConverting[] = {0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0};
+					int needsConverting[] = {0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0};
 					if(needsConverting[eventSelected] == 1){//event needs converting to miles
 						distance = PaceCalculations.ConvertUnit(PaceCalculations.CONV_KILOMETERS_TO_MILES, distance);
 					}

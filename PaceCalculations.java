@@ -178,15 +178,20 @@ public class PaceCalculations {
 				double minutes = 0;
 				double seconds = 0;
 				
-                                // Parse the numbers and ensure they are above zero
 				temp = Double.parseDouble(elements[0]);
-				hours = Math.max(0.0, temp);
+				//hours = Math.max(0.0, temp);
+				hours = temp < 0.0 ? 0.0 : temp;
+				
 				
 				temp = Double.parseDouble(elements[1]);
-				minutes = Math.max(0.0, temp);
+				//minutes = Math.max(0.0, temp);
+				minutes = temp < 0.0 ? 0.0 : temp;
+				
 				
 				temp = Double.parseDouble(elements[2]);
-				seconds = Math.max(0.0, temp);
+				//seconds = Math.max(0.0, temp);
+				seconds = temp < 0.0 ? 0.0 : temp;
+				
 				
 				//total = (hours * 3600) + (minutes * 60) + seconds;
 				
@@ -199,7 +204,7 @@ public class PaceCalculations {
 			
 		} //end if (string elements array length)
 		
-		return -1;
+		return -1.0;
 	}
 	
 	/***
@@ -219,6 +224,25 @@ public class PaceCalculations {
 	}
 	
 	/***
+	 * Safely parses a double that is non negative
+	 * Negative doubles are truncated to zero
+	 * 
+	 * Returns -1.0 if there is an error
+	 * @param str
+	 * @return double
+	 */
+	public static double SafeParseDouble(String str){
+		double result = 0.0;
+		try{
+			double temp = Double.parseDouble(str);
+			result = temp < 0.0 ? 0.0 : temp;
+		}catch(Exception e){
+			result = -1.0;
+			System.err.println("SafeParseDouble(): " + e.getMessage());
+		}
+		return result;
+	}
+	/***
 	 * Gets the total number of seconds from three separate strings representing hours, minutes, and seconds
 	 * If any of the strings represent negative numbers, they are truncated to zero.
 	 * 
@@ -237,21 +261,25 @@ public class PaceCalculations {
 			double minutes = 0;
 			double seconds = 0;
 			
+			
 			temp = Double.parseDouble(strHours);
-			hours = Math.max(0.0, temp);
+			//hours = Math.max(0.0, temp);
+			hours = temp < 0.0 ? 0.0 : temp;
 			
 			temp = Double.parseDouble(strMinutes);
-			minutes = Math.max(0.0, temp);
+			//minutes = Math.max(0.0, temp);
+			minutes = temp < 0.0 ? 0.0 : temp;
 			
 			temp = Double.parseDouble(strSeconds);
-			seconds = Math.max(0.0, temp);
+			//seconds = Math.max(0.0, temp);
+			seconds = temp < 0.0 ? 0.0 : temp;
 			
 			return GetTotalSeconds(hours, minutes, seconds);
 			
 		}catch(Exception e){
 			System.err.println("GetTotalSeconds() - Exception: " + e.getMessage());
 		}
-		return -1;
+		return -1.0;
 	}
 	
 	/***
