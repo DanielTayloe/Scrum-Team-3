@@ -27,6 +27,7 @@ public class PacerRealGood {
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					PacerRealGood window = new PacerRealGood();
@@ -54,7 +55,7 @@ public class PacerRealGood {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		
-		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(SwingConstants.TOP);
 		frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
 		addTabs();
@@ -162,15 +163,21 @@ class TabPanel extends JPanel{
 		if(TabPanel.BL.equals(positionDistance)){
 			mode = DISTANCE;
 			txtDistance.setEnabled(false);
+			txtDistance.setDisabledTextColor(Color.black);
 		}else if(TabPanel.BL.equals(positionPace)){
 			mode = PACE;
 			txtPaceMinutes.setEnabled(false);
 			txtPaceSeconds.setEnabled(false);
+			txtPaceMinutes.setDisabledTextColor(Color.black);
+			txtPaceSeconds.setDisabledTextColor(Color.black);
 		}else if(TabPanel.BL.equals(positionTime)){
 			mode = TIME;
 			txtTimeHours.setEnabled(false);
 			txtTimeMinutes.setEnabled(false);
 			txtTimeSeconds.setEnabled(false);
+			txtTimeHours.setDisabledTextColor(Color.black);
+			txtTimeMinutes.setDisabledTextColor(Color.black);
+			txtTimeSeconds.setDisabledTextColor(Color.black);
 		}else{
 			mode = BAD;
 		}
@@ -187,6 +194,14 @@ class TabPanel extends JPanel{
 		}
 		                
 		replaceEmptysWithZero();
+		
+		//truncate user input
+		txtPaceMinutes.setText(String.valueOf(PaceCalculations.TruncatePace(PaceCalculations.SafeParseDouble(txtPaceMinutes.getText()), 20.0)));
+		txtPaceMinutes.setText(PaceCalculations.TruncateUserInputString(txtPaceMinutes.getText()));
+
+		txtTimeHours.setText(String.valueOf(PaceCalculations.TruncatePace(PaceCalculations.SafeParseDouble(txtTimeHours.getText()), 4.0)));
+		txtTimeHours.setText(PaceCalculations.TruncateUserInputString(txtTimeHours.getText()));
+		
 		DecimalFormat d = new DecimalFormat("#.##");
 		
 		switch(mode){
@@ -194,15 +209,21 @@ class TabPanel extends JPanel{
 				double pace = PaceCalculations.GetTotalSeconds("0", txtPaceMinutes.getText(), txtPaceSeconds.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
 				
+				time = PaceCalculations.TruncatePace(time, 14400.0);
+				String[] fixed = PaceCalculations.secondsToParts(time);
+				txtTimeHours.setText(fixed[0]);
+				txtTimeMinutes.setText(fixed[1]);
+				txtTimeSeconds.setText(fixed[2]);
+				
 				//Color highlighting for incorrect values
-				if(pace < 0.0 || time < 0.0){
+				if(pace <= 0.0 || time <= 0.0){
 					txtPaceMinutes.setBackground(Color.PINK);
 					txtPaceSeconds.setBackground(Color.PINK);
 					txtTimeMinutes.setBackground(Color.PINK);
 					txtTimeSeconds.setBackground(Color.PINK);
 					txtTimeHours.setBackground(Color.PINK);
 					
-					txtDistance.setText("");
+					reset();
 				}else{
 					txtPaceMinutes.setBackground(Color.WHITE);
 					txtPaceSeconds.setBackground(Color.WHITE);
@@ -217,9 +238,15 @@ class TabPanel extends JPanel{
 			case PACE:{
 				double distance = PaceCalculations.SafeParseDouble(txtDistance.getText());
 				double time = PaceCalculations.GetTotalSeconds(txtTimeHours.getText(), txtTimeMinutes.getText(), txtTimeSeconds.getText());
+
+				time = PaceCalculations.TruncatePace(time, 14400.0);
+				String[] fixed = PaceCalculations.secondsToParts(time);
+				txtTimeHours.setText(fixed[0]);
+				txtTimeMinutes.setText(fixed[1]);
+				txtTimeSeconds.setText(fixed[2]);
 				
 				//Color highlighting for incorrect values
-				if(distance < 0.0 || time < 0.0){
+				if(distance <= 0.0 || time <= 0.0){
 					txtTimeHours.setBackground(Color.PINK);
 					txtTimeMinutes.setBackground(Color.PINK);
 					txtTimeSeconds.setBackground(Color.PINK);
@@ -227,6 +254,7 @@ class TabPanel extends JPanel{
 					txtPaceMinutes.setText("");
 					txtPaceSeconds.setText("");
 					
+					reset();
 				}else{
 					txtTimeHours.setBackground(Color.WHITE);
 					txtTimeMinutes.setBackground(Color.WHITE);
@@ -246,7 +274,7 @@ class TabPanel extends JPanel{
 				
 				
 				//Color highlighting for incorrect values
-				if(distance < 0.0 || pace < 0.0){
+				if(distance <= 0.0 || pace <= 0.0){
 					txtPaceMinutes.setBackground(Color.PINK);
 					txtPaceSeconds.setBackground(Color.PINK);
 					
@@ -254,6 +282,7 @@ class TabPanel extends JPanel{
 					txtTimeMinutes.setText("");
 					txtTimeSeconds.setText("");
 					
+					reset();
 				}else{
 					txtPaceMinutes.setBackground(Color.WHITE);
 					txtPaceSeconds.setBackground(Color.WHITE);
@@ -387,6 +416,7 @@ class TabPanel extends JPanel{
 		moduleTime.add(txtTimeSeconds, "cell 3 1,growx");
 	}
 	
+	@Override
 	public String toString(){
 		return 
 			"Distance: " + txtDistance.getText() + " miles" + "\n" +

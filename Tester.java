@@ -1,8 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.text.DecimalFormat;
-import java.util.HashMap;
-
 import org.junit.Test;
 
 public class Tester {

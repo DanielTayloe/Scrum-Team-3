@@ -256,7 +256,7 @@ public class PaceCalculations {
 	 * @return double
 	 */
 	public static double TruncatePace(double pace, double limit){
-		return pace > limit ? limit : (pace < 0.0 ? 0.0 : pace);
+		return pace > limit ? limit : pace;
 	}
 	
 	public static String TruncateUserInputString(String str){
