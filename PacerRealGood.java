@@ -104,6 +104,8 @@ class TabPanel extends JPanel{
 	private JTextField txtTimeMinutes;
 	private JTextField txtTimeSeconds;
 	private JTextField txtDistance;
+	
+	private JComboBox cmbEvents;
 
 	private JButton computeButton;
 	private JButton resetButton;
@@ -299,12 +301,15 @@ class TabPanel extends JPanel{
 	 * Clears all boxes to zero, regardless of existing content.
 	 */
 	public void reset(){
-		txtDistance.setText("0");
-		txtPaceMinutes.setText("0");
-		txtPaceSeconds.setText("0");
-		txtTimeHours.setText("0");
-		txtTimeMinutes.setText("0");
-		txtTimeSeconds.setText("0");
+		txtDistance.setText("");
+		txtPaceMinutes.setText("");
+		txtPaceSeconds.setText("");
+		txtTimeHours.setText("");
+		txtTimeMinutes.setText("");
+		txtTimeSeconds.setText("");
+		if(mode != DISTANCE){
+			cmbEvents.setSelectedIndex(0);
+		}
 	}
 	
 	/**
@@ -321,7 +326,7 @@ class TabPanel extends JPanel{
 
 		if(eventSelector) {
 			String[] eventNames = {"", "Marathon", "Half-Marathon", "5K", "5M", "8K", "10K", "15K", "10M", "20K", "15M", "25K", "30K", "20M"};
-			final JComboBox cmbEvents = new JComboBox(eventNames);
+			cmbEvents = new JComboBox(eventNames);
 			moduleDistance.add(new JLabel("Or select an event"), "cell 0 2,alignx trailing");
 			moduleDistance.add(cmbEvents, "cell 1 2,alignx trailing");
 			cmbEvents.addActionListener(new ActionListener() {
@@ -329,7 +334,7 @@ class TabPanel extends JPanel{
 				public void actionPerformed(ActionEvent e) {
 					int eventSelected = cmbEvents.getSelectedIndex();
 
-					double eventQuantities[] = {0.0, 26.21875, 13.109375, 5, 5, 8, 10, 15, 10, 20, 15, 25, 30, 20};
+					double eventQuantities[] = {0, 26.21875, 13.109375, 5, 5, 8, 10, 15, 10, 20, 15, 25, 30, 20};
 					double distance = eventQuantities[eventSelected];
 					int needsConverting[] = {0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0};
 					if(needsConverting[eventSelected] == 1){//event needs converting to miles
