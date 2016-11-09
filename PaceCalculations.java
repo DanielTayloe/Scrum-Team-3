@@ -3,17 +3,18 @@ import java.text.DecimalFormat;
 
 /***
  * Scrum Group 3
+ * 
  * @author jacob psimos
  *
  */
 
-//Reference: http://www.coolrunning.com/engine/4/4_1/96.shtml
+// Reference: http://www.coolrunning.com/engine/4/4_1/96.shtml
 
 public class PaceCalculations {
-	
+
 	/*
-	 * The following defined bytes are the values for the first
-	 * argument when converting a unit of measurement to a different one
+	 * The following defined bytes are the values for the first argument when
+	 * converting a unit of measurement to a different one
 	 * 
 	 * See ConvertUnit(byte oneOfThese, double value)
 	 */
@@ -38,10 +39,10 @@ public class PaceCalculations {
 	public static final byte CONV_FEET_TO_METERS = 0x19;
 	public static final byte CONV_FEET_TO_YARDS = 0x1A;
 
-	public PaceCalculations(){
-		
+	public PaceCalculations() {
+
 	}
-	
+
 	/***
 	 * Calculate time, pace, and factor using strings
 	 * 
@@ -50,103 +51,101 @@ public class PaceCalculations {
 	 * @param factor
 	 * @return
 	 */
-	public static double Distance(String time, String pace, String factor){
-		try{
+	public static double Distance(String time, String pace, String factor) {
+		try {
 			double temp = 0.0;
 			double dblTime = 0.0;
 			double dblPace = 0.0;
 			double dblFactor = 0.0;
-			
-                        // Parse the numbers and ensure they are above zero
+
+			// Parse the numbers and ensure they are above zero
 			temp = Double.parseDouble(time);
 			dblTime = Math.max(0.0, temp);
-			
+
 			temp = Double.parseDouble(pace);
 			dblPace = Math.max(0.0, temp);
-			
+
 			temp = Double.parseDouble(factor);
 			dblFactor = Math.max(0.0, temp);
-			
+
 			return Distance(dblTime, dblPace, dblFactor);
-		}catch(Exception e){
+		} catch (Exception e) {
 			System.err.println("Distance() - Exception: " + e.getMessage());
 		}
 		return -1.0;
 	}
-	
-	
-	public static double Distance(double time, double pace, double factor){
-		//Dist = Time / (Pace / factor)
-		if(pace != 0){
+
+	public static double Distance(double time, double pace, double factor) {
+		// Dist = Time / (Pace / factor)
+		if (pace != 0) {
 			return time / (pace / factor);
-		}else{
+		} else {
 			return 0;
 		}
 	}
-	
-	public static double Pace(String time, String distance, String factor){
-		try{
+
+	public static double Pace(String time, String distance, String factor) {
+		try {
 			double temp = 0.0;
 			double dblTime = 0.0;
 			double dblDistance = 0.0;
 			double dblFactor = 0.0;
-			
-                        // Parse the numbers and ensure they are above zero
+
+			// Parse the numbers and ensure they are above zero
 			temp = Double.parseDouble(time);
 			dblTime = Math.max(0.0, temp);
-			
+
 			temp = Double.parseDouble(distance);
 			dblDistance = Math.max(0.0, temp);
-			
+
 			temp = Double.parseDouble(factor);
 			dblFactor = Math.max(0.0, temp);
-			
+
 			return Pace(dblTime, dblDistance, dblFactor);
-		}catch(Exception e){
+		} catch (Exception e) {
 			System.err.println("Pace() - Exception: " + e.getMessage());
 		}
 		return -1.0;
 	}
-	
-	public static double Pace(double time, double distance, double factor){
-		//Pace = (Time / distance) / factor
-		if(distance != 0){
+
+	public static double Pace(double time, double distance, double factor) {
+		// Pace = (Time / distance) / factor
+		if (distance != 0) {
 			return (time / distance) / factor;
-		}else{
+		} else {
 			return 0;
 		}
 	}
-	
-	public static double Time(String distance, String pace, String factor){
-		try{
+
+	public static double Time(String distance, String pace, String factor) {
+		try {
 			double temp = 0.0;
 			double dblDistance = 0.0;
 			double dblPace = 0.0;
 			double dblFactor = 0.0;
-			
-                        // Parse the numbers and ensure they are above zero
+
+			// Parse the numbers and ensure they are above zero
 			temp = Double.parseDouble(distance);
 			dblDistance = Math.max(0.0, temp);
-                        
+
 			temp = Double.parseDouble(pace);
 			dblPace = Math.max(0.0, temp);
-			
+
 			temp = Double.parseDouble(factor);
 			dblFactor = Math.max(0.0, temp);
-			
-//			return Time(dblDistance, dblPace, dblFactor);
-		}catch(Exception e){
+
+			// return Time(dblDistance, dblPace, dblFactor);
+		} catch (Exception e) {
 			System.err.println("Time() - Exception: " + e.getMessage());
 		}
 		return -1.0;
 	}
-	
-	public static double Time(double distance, double pace, double factor){
-		//Time = Dist x Pace x factor
+
+	public static double Time(double distance, double pace, double factor) {
+		// Time = Dist x Pace x factor
 		return distance * pace * factor;
 	}
-	
-	
+
 	/***
 	 * Calculate the total number of seconds from a time formatted string
 	 * hh:mm:ss
@@ -154,258 +153,294 @@ public class PaceCalculations {
 	 * Negative numbers are accepted, however they are set to zero for the field
 	 * where a negative number is found.
 	 * 
-	 * Exceptions:
-	 * Invalid input will be printed to standard error stream along with available details
-	 * and -1 is returned.
+	 * Exceptions: Invalid input will be printed to standard error stream along
+	 * with available details and -1 is returned.
 	 * 
-	 * @param input hh:mm:ss string
+	 * @param input
+	 *            hh:mm:ss string
 	 * @return total number of seconds as integer
 	 */
-	public static double GetTotalSeconds(String input){
-		
+	public static double GetTotalSeconds(String input) {
+
 		String[] elements = input.split(":");
-		if(elements.length != 3){
-			
+		if (elements.length != 3) {
+
 			System.err.println("GetTotalSeconds() - Invalid input string format");
 			System.err.println("> " + input);
-			
-		}else{
-		
-			try{
-				
+
+		} else {
+
+			try {
+
 				double temp = 0;
 				double hours = 0;
 				double minutes = 0;
 				double seconds = 0;
-				
+
 				temp = Double.parseDouble(elements[0]);
-				//hours = Math.max(0.0, temp);
+				// hours = Math.max(0.0, temp);
 				hours = temp < 0.0 ? 0.0 : temp;
-				
-				
+
 				temp = Double.parseDouble(elements[1]);
-				//minutes = Math.max(0.0, temp);
+				// minutes = Math.max(0.0, temp);
 				minutes = temp < 0.0 ? 0.0 : temp;
-				
-				
+
 				temp = Double.parseDouble(elements[2]);
-				//seconds = Math.max(0.0, temp);
+				// seconds = Math.max(0.0, temp);
 				seconds = temp < 0.0 ? 0.0 : temp;
-				
-				
-				//total = (hours * 3600) + (minutes * 60) + seconds;
-				
+
+				// total = (hours * 3600) + (minutes * 60) + seconds;
+
 				return GetTotalSeconds(hours, minutes, seconds);
-				
-			}catch(Exception e){
+
+			} catch (Exception e) {
 				System.err.println("GetTotalSeconds() Exception message: " + e.getMessage());
 				e.printStackTrace();
 			}
-			
-		} //end if (string elements array length)
-		
+
+		} // end if (string elements array length)
+
 		return -1.0;
 	}
-	
+
 	/***
 	 * Returns the total number of seconds given hours minutes and seconds
 	 * 
-	 * @param hours Number of hours
-	 * @param minutes Number of minutes
-	 * @param seconds Number of seconds
+	 * @param hours
+	 *            Number of hours
+	 * @param minutes
+	 *            Number of minutes
+	 * @param seconds
+	 *            Number of seconds
 	 * @return seconds as integer
 	 */
-	public static double GetTotalSeconds(double hours, double minutes, double seconds){
-		if(hours < 0) { hours = 0; }
-		if(minutes < 0) { minutes = 0; }
-		if(seconds < 0) { seconds = 0; }
-		
+	public static double GetTotalSeconds(double hours, double minutes, double seconds) {
+		if (hours < 0) {
+			hours = 0;
+		}
+		if (minutes < 0) {
+			minutes = 0;
+		}
+		if (seconds < 0) {
+			seconds = 0;
+		}
+
 		return (hours * 3600.0) + (minutes * 60.0) + seconds;
 	}
-	
+
 	/***
-	 * Safely parses a double that is non negative
-	 * Negative doubles are truncated to zero
+	 * Safely parses a double that is non negative Negative doubles are
+	 * truncated to zero
 	 * 
 	 * Returns -1.0 if there is an error
+	 * 
 	 * @param str
 	 * @return double
 	 */
-	public static double SafeParseDouble(String str){
+	public static double SafeParseDouble(String str) {
 		double result = 0.0;
-		try{
+		try {
 			double temp = Double.parseDouble(str);
 			result = temp < 0.0 ? 0.0 : temp;
-		}catch(Exception e){
+		} catch (Exception e) {
 			result = -1.0;
 			System.err.println("SafeParseDouble(): " + e.getMessage());
 		}
 		return result;
 	}
+	
 	/***
-	 * Gets the total number of seconds from three separate strings representing hours, minutes, and seconds
-	 * If any of the strings represent negative numbers, they are truncated to zero.
+	 * Truncates a pace value that is greater than `limit` to `limit` and less than 0.0 to 0.0
+	 * @param pace
+	 * @param limit - the maximum value before truncation happens
+	 * @return double
+	 */
+	public static double TruncatePace(double pace, double limit){
+		return pace > limit ? limit : (pace < 0.0 ? 0.0 : pace);
+	}
+	
+	public static String TruncateUserInputString(String str){
+		if(str.indexOf('.') != -1){
+			return str.substring(0, str.indexOf('.'));
+		}
+		return str;
+	}
+
+	/***
+	 * Gets the total number of seconds from three separate strings representing
+	 * hours, minutes, and seconds If any of the strings represent negative
+	 * numbers, they are truncated to zero.
 	 * 
-	 * Exceptions
-	 * If any of the strings are not able to be parsed to integers, the function returns -1
+	 * Exceptions If any of the strings are not able to be parsed to integers,
+	 * the function returns -1
+	 * 
 	 * @param strHours
 	 * @param strMinutes
 	 * @param strSeconds
 	 * @return
 	 */
-	public static double GetTotalSeconds(String strHours, String strMinutes, String strSeconds){
-		try{
-			
+	public static double GetTotalSeconds(String strHours, String strMinutes, String strSeconds) {
+		try {
+
 			double temp = 0;
 			double hours = 0;
 			double minutes = 0;
 			double seconds = 0;
-			
-			
+
 			temp = Double.parseDouble(strHours);
-			//hours = Math.max(0.0, temp);
+			// hours = Math.max(0.0, temp);
 			hours = temp < 0.0 ? 0.0 : temp;
-			
+
 			temp = Double.parseDouble(strMinutes);
-			//minutes = Math.max(0.0, temp);
+			// minutes = Math.max(0.0, temp);
 			minutes = temp < 0.0 ? 0.0 : temp;
-			
+
 			temp = Double.parseDouble(strSeconds);
-			//seconds = Math.max(0.0, temp);
+			// seconds = Math.max(0.0, temp);
 			seconds = temp < 0.0 ? 0.0 : temp;
-			
+
 			return GetTotalSeconds(hours, minutes, seconds);
-			
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			System.err.println("GetTotalSeconds() - Exception: " + e.getMessage());
 		}
 		return -1.0;
 	}
-	
+
 	/***
 	 * Returns the number of whole hours from a given number of total seconds
 	 * Negative numbers or zero always return zero
 	 * 
-	 * @param totalSeconds number of seconds to retrieve hours from
+	 * @param totalSeconds
+	 *            number of seconds to retrieve hours from
 	 * @return hours as integer
 	 */
-	public static double GetHoursFromSeconds(double totalSeconds){
-		if(totalSeconds <= 0) { return 0.0; }
-		
+	public static double GetHoursFromSeconds(double totalSeconds) {
+		if (totalSeconds <= 0) {
+			return 0.0;
+		}
+
 		return totalSeconds / 3600.0;
 	}
-	
+
 	/**
 	 * Splits a number of seconds into seconds, minutes and hours strings
 	 * 
-	 * @param seconds total number of seconds
-	 * @return string array, containing the hours, minutes and then seconds in order
+	 * @param seconds
+	 *            total number of seconds
+	 * @return string array, containing the hours, minutes and then seconds in
+	 *         order
 	 */
 	public static String[] secondsToParts(double seconds) {
 		int wholeSeconds = 0;
 		double fraction = 0;
-		if(seconds != Double.NaN){
-			wholeSeconds = (int)Math.floor(seconds);
-			fraction = seconds - (double)wholeSeconds;
+		if (seconds != Double.NaN) {
+			wholeSeconds = (int) Math.floor(seconds);
+			fraction = seconds - (double) wholeSeconds;
 		}
-		
-		int secondsPart = wholeSeconds  % 60;
+
+		int secondsPart = wholeSeconds % 60;
 		int minutesPart = (wholeSeconds / 60) % 60;
 		int hoursPart = wholeSeconds / 3600;
-		
+
 		DecimalFormat d = new DecimalFormat("#.#");
 
-		String out[] = new String[] {""+hoursPart, ""+minutesPart, d.format(secondsPart+fraction)};
+		String out[] = new String[] { "" + hoursPart, "" + minutesPart, d.format(secondsPart + fraction) };
 		return out;
 	}
-	
+
 	/***
 	 * Returns the number of whole minutes from a given number of total seconds
 	 * Negative numbers or zero always return zero
 	 * 
-	 * @param totalSeconds number of seconds to retrieve minutes from
+	 * @param totalSeconds
+	 *            number of seconds to retrieve minutes from
 	 * @return minutes as integer
 	 */
-	public static double GetMinutesFromSeconds(double totalSeconds){
-		if(totalSeconds <= 0) { return 0.0; }
-		
+	public static double GetMinutesFromSeconds(double totalSeconds) {
+		if (totalSeconds <= 0) {
+			return 0.0;
+		}
+
 		return totalSeconds / 60.0;
 	}
-	
+
 	/***
 	 * Converts `value` of value X to the same value in unit Y
 	 * 
 	 * 
-	 * Example:
-	 * 		To convert miles to yards, input CONV_MILES_TO_YARDS as
-	 * 		the `conversion` and the number of miles for `value`.  The total number
-	 * 		of yards would be returned
-	 * @param conversion CONV_(UNIT)_TO_(UNIT) See declarations for these values
-	 * @param value the input value that will be converted
+	 * Example: To convert miles to yards, input CONV_MILES_TO_YARDS as the
+	 * `conversion` and the number of miles for `value`. The total number of
+	 * yards would be returned
+	 * 
+	 * @param conversion
+	 *            CONV_(UNIT)_TO_(UNIT) See declarations for these values
+	 * @param value
+	 *            the input value that will be converted
 	 * @return the converted value
 	 */
-	public static double ConvertUnit(final byte conversion, final double value){
+	public static double ConvertUnit(final byte conversion, final double value) {
 		double returnValue = 0.0;
-		switch(conversion){
-			case  CONV_MILES_TO_METERS:
-				returnValue = value * 1609.33999997549;
+		switch (conversion) {
+		case CONV_MILES_TO_METERS:
+			returnValue = value * 1609.33999997549;
 			break;
-			case  CONV_MILES_TO_YARDS:
-				returnValue = value * 1760.0;
+		case CONV_MILES_TO_YARDS:
+			returnValue = value * 1760.0;
 			break;
-			case  CONV_MILES_TO_FEET:
-				returnValue = value * 5280.0;
+		case CONV_MILES_TO_FEET:
+			returnValue = value * 5280.0;
 			break;
-			case  CONV_KILOMETERS_TO_MILES:
-				returnValue = value * 0.621371;
+		case CONV_KILOMETERS_TO_MILES:
+			returnValue = value * 0.621371;
 			break;
-			case  CONV_KILOMETERS_TO_METERS:
-				returnValue = value * 1000.0;
+		case CONV_KILOMETERS_TO_METERS:
+			returnValue = value * 1000.0;
 			break;
-			case  CONV_KILOMETERS_TO_YARDS:
-				returnValue = value * 1093.61;
+		case CONV_KILOMETERS_TO_YARDS:
+			returnValue = value * 1093.61;
 			break;
-			case  CONV_KILOMETERS_TO_FEET:
-				returnValue = value * 3280.84;
+		case CONV_KILOMETERS_TO_FEET:
+			returnValue = value * 3280.84;
 			break;
-			case  CONV_METERS_TO_MILES:
-				returnValue = value * 0.000621371;
+		case CONV_METERS_TO_MILES:
+			returnValue = value * 0.000621371;
 			break;
-			case  CONV_METERS_TO_KILOMETERS:
-				returnValue = value * 0.001;
+		case CONV_METERS_TO_KILOMETERS:
+			returnValue = value * 0.001;
 			break;
-			case  CONV_METERS_TO_YARDS:
-				returnValue = value * 1.09361;
+		case CONV_METERS_TO_YARDS:
+			returnValue = value * 1.09361;
 			break;
-			case  CONV_METERS_TO_FEET:
-				returnValue = value * 3.28084;
+		case CONV_METERS_TO_FEET:
+			returnValue = value * 3.28084;
 			break;
-			case  CONV_YARDS_TO_MILES:
-				returnValue = value * 0.000568182;
+		case CONV_YARDS_TO_MILES:
+			returnValue = value * 0.000568182;
 			break;
-			case  CONV_YARDS_TO_KILOMETERS:
-				returnValue = value * 0.0009144;
+		case CONV_YARDS_TO_KILOMETERS:
+			returnValue = value * 0.0009144;
 			break;
-			case  CONV_YARDS_TO_METERS:
-				returnValue = value * 0.9144;
+		case CONV_YARDS_TO_METERS:
+			returnValue = value * 0.9144;
 			break;
-			case  CONV_YARDS_TO_FEET:
-				returnValue = value * 3.0;
+		case CONV_YARDS_TO_FEET:
+			returnValue = value * 3.0;
 			break;
-			case  CONV_FEET_TO_MILES:
-				returnValue = value * 0.000189394;
+		case CONV_FEET_TO_MILES:
+			returnValue = value * 0.000189394;
 			break;
-			case  CONV_FEET_TO_KILOMETERS:
-				returnValue = value * 0.0003048;
+		case CONV_FEET_TO_KILOMETERS:
+			returnValue = value * 0.0003048;
 			break;
-			case  CONV_FEET_TO_METERS:
-				returnValue = value * 0.3048;
+		case CONV_FEET_TO_METERS:
+			returnValue = value * 0.3048;
 			break;
-			case  CONV_FEET_TO_YARDS:
-				returnValue = value / 3.0;
+		case CONV_FEET_TO_YARDS:
+			returnValue = value / 3.0;
 			break;
 		}
 		return returnValue;
 	}
-	
+
 }
